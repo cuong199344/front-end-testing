@@ -59,7 +59,7 @@ jobs:
   #         path: test.json
   build:
     # needs: test
-    needs: lint
+    needs: qualityCheck
     runs-on: ubuntu-latest
     steps:
       - name: Get code
