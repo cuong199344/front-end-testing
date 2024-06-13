@@ -1,0 +1,87 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - master
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Load and Cache dependencies
+        id: cache-deps
+        # Vì đây là action ở local nên sẽ hướng đường dẫn tới đó
+        uses: ./.github/actions/cached-deps
+        with:
+          caching: 'false'
+      - name: Output information
+        run: echo "Cache used? ${{steps.cache-deps.outputs.used-cache}}"
+      - name: Lint code
+        run: npm run lint
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get code
+  #       uses: actions/checkout@v3
+  #     - name: Load and Cache dependencies
+  #       # Vì đây là action ở local nên sẽ hướng đường dẫn tới đó
+  #       uses: ./.github/actions/cached-deps
+  #     - name: Test code
+  #       id: run-tests
+  #       run: npm run test
+  #     - name: Upload test report
+  #       if: failure() && steps.run-tests.outcome == 'failure'
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         # tên artifact
+  #         name: test-report
+  #         # vị trí của artifact
+  #         path: test.json
+  build:
+    # needs: test
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Load and Cache dependencies
+        # Vì đây là action ở local nên sẽ hướng đường dẫn tới đó
+        uses: ./.github/actions/cached-deps
+      - name: Build website
+        run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          # chon artifacts muốn download
+          name: dist-files
+          # chọn nơi sẽ tải xuống
+          path: ./dist
+      - name: Output contents
+        run: ls
+      - name: Deploy site
+        id: deploy
+        # uses: ./.github/actions/deploy-s3-docker
+        # env:
+        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+        # with:
+        #   bucket: gha-customs-actions-hosting
+        #   dist-folder: ./dist
+        run: |
+          echo "Deploy code hear"
+      # - name: Output information
+      #   run: |
+      #     echo "Live URL: ${{ steps.deploy.outputs.website-url }}"
