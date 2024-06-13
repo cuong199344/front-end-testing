@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { Fragment, useState } from "react";
-import { Menu, MenuButton, MenuItem, MenuItems, Transition, Tab } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { BiChevronDown } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineClose, AiOutlineLogout } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import CustomButton from "./CustomButton";
-import { users } from "../utils/data";
 import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../redux/userSlice";
 

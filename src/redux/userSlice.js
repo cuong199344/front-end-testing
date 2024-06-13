@@ -1,5 +1,5 @@
+/* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import { users } from "../utils/data";
 
 
 const initialState = {

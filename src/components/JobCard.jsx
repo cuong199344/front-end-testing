@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { GoLocation } from "react-icons/go";
 import moment from "moment";
 import { Link } from "react-router-dom";

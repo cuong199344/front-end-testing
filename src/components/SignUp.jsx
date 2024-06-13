@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "react-hook-form";
@@ -15,7 +17,7 @@ const SignUp = ({ open, setOpen }) => {
 
   const [isRegister, setIsRegister] = useState(true);
   const [accountType, setAccountType] = useState("seeker");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const {
     register,
@@ -32,7 +34,7 @@ const SignUp = ({ open, setOpen }) => {
 
   const onSubmit = async (data) => {
     let URL = null;
-    // setIsLoading(true);
+    setIsLoading(true);
     if (isRegister) {
       if (accountType === "seeker") {
         URL = "auth/register";
@@ -67,10 +69,10 @@ const SignUp = ({ open, setOpen }) => {
         localStorage.setItem("userInfo", JSON.stringify(newData));
         window.location.replace(from);
       }
-      // setIsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -268,14 +270,17 @@ const SignUp = ({ open, setOpen }) => {
                     )}
 
                     <div className="mt-2">
-                      <CustomButton
-                        type="submit"
-                        containerStyles={`inline-flex justify-center 
-                        rounded-md bg-blue-600 px-8 py-2 
-                        text-sm font-medium text-white 
-                        outline-none hover:bg-blue-800`}
-                        title={isRegister ? "Create Account" : "Login Account"}
-                      />
+                      {isLoading ? (
+                        <Loading />
+                      ) : (
+                        <CustomButton
+                          type="submit"
+                          containerStyles={`inline-flex justify-center rounded-md bg-blue-600 px-8 py-2 text-sm font-medium text-white outline-none hover:bg-blue-800`}
+                          title={
+                            isRegister ? "Create Account" : "Login Account"
+                          }
+                        />
+                      )}
                     </div>
                   </form>
 

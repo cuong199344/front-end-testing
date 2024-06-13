@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { Fragment, useEffect, useState } from "react";
 import moment from "moment";
 import { AiOutlineSafetyCertificate } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { CustomButton, JobCard, Loading, TextInput } from "../components";
 import { apiRequest, handleFileUpload } from "../utils";
-import { useForm, useFormState } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Login } from "../redux/userSlice";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 
 const noLogo =
